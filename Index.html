@@ -27,40 +27,46 @@
 const { useState, useEffect } = React;
 
 const PLANTS = {
-  beans:      { id:"beans",       name:"Provider Green Beans",   emoji:"🫘", zone:"West – Garage Shade",  status:"sprouting", count:null,  watering:"1–1.5\"/wk",     gal:"0.4 gal/ft",      sec:"5 sec/ft",  fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"No"},                         notes:[], harvests:[], harvest:"July 15" },
+  beans:      { id:"beans",       name:"Green Beans",            emoji:"🫘", zone:"West – Garage Shade",  status:"sprouting", count:null,  watering:"1–1.5\"/wk",     gal:"0.4 gal/ft",      sec:"5 sec/ft",  fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"No"},                         notes:[], harvests:[], harvest:"July 15" },
+  serrano:    { id:"serrano",     name:"Serrano Pepper",         emoji:"🌶️", zone:"West – Garage Shade",  status:"growing",   count:"x1",  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"No","Epsom Salt":"1 tbsp/ft height","Bone Meal":"1–2 tbsp/plant"},          notes:[], harvests:[], harvest:"June 7" },
   greenPepper:{ id:"greenPepper", name:"Green Peppers",          emoji:"🫑", zone:"West – Garage Shade",  status:"growing",   count:"x5",  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"No","Epsom Salt":"1 tbsp/ft height","Bone Meal":"1–2 tbsp/plant"},          notes:[], harvests:[], harvest:"June 21" },
   lettuce:    { id:"lettuce",     name:"Lettuce & Bok Choy",     emoji:"🥬", zone:"West – Garage Shade",  status:"bolting",   count:null,  watering:"1–1.5\"/wk",     gal:"0.2 gal/plant",   sec:"2–3 sec",   fert:{"10-10-10":"No","Epsom Salt":"No","Bone Meal":"No"},                                 notes:[], harvests:[], harvest:"Seed collection" },
+  habanero:   { id:"habanero",    name:"Chocolate Habanero",     emoji:"🌶️", zone:"West – Garage Shade",  status:"growing",   count:"x1",  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"No","Epsom Salt":"1 tbsp/ft height","Bone Meal":"1–2 tbsp/plant"},          notes:[], harvests:[], harvest:"Aug 10" },
   paprika:    { id:"paprika",     name:"Paprika Peppers",        emoji:"🌶️", zone:"West – Garage Shade",  status:"growing",   count:"x4",  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"No","Epsom Salt":"1 tbsp/ft height","Bone Meal":"1–2 tbsp/plant"},          notes:[], harvests:[], harvest:"Aug 2" },
   parsley:    { id:"parsley",     name:"Curly Parsley",          emoji:"🌿", zone:"West – Garage Shade",  status:"growing",   count:null,  watering:"1–1.5\"/wk",     gal:"0.2 gal/plant",   sec:"2–3 sec",   fert:{"10-10-10":"No","Epsom Salt":"No","Bone Meal":"No"},                                 notes:[], harvests:[], harvest:"Ongoing" },
   arugula1:   { id:"arugula1",   name:"Arugula (Row 3)",        emoji:"🌱", zone:"West – Garage Shade",  status:"bolting",   count:null,  watering:"1–1.5\"/wk",     gal:"0.2 gal/plant",   sec:"2–3 sec",   fert:{"10-10-10":"No","Epsom Salt":"No","Bone Meal":"No"},                                 notes:[], harvests:[], harvest:"Seed collection" },
-  zucchini1:  { id:"zucchini1",  name:"Zucchini (Row 3)",       emoji:"🥒", zone:"West – Garage Shade",  status:"growing",   count:"x1",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"Wait post-harvest","Epsom Salt":"No","Bone Meal":"No"},                   notes:[], harvests:[], harvest:"May 27" },
+  zucchini1:  { id:"zucchini1",  name:"Zucchini (Row 3)",       emoji:"🥒", zone:"West – Garage Shade",  status:"growing",   count:"x1",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"Wait post-harvest","Epsom Salt":"No","Bone Meal":"Applied"},               notes:[], harvests:[], harvest:"TBD - monitor" },
   empty:      { id:"empty",      name:"Empty Spot",             emoji:"🪴", zone:"West – Garage Shade",  status:"empty",     count:null,  watering:"N/A",             gal:"N/A",             sec:"N/A",       fert:{"10-10-10":"N/A","Epsom Salt":"N/A","Bone Meal":"N/A"},                              notes:[], harvests:[], harvest:"Available" },
   arugula2:   { id:"arugula2",   name:"Arugula (Row 4)",        emoji:"🌱", zone:"Transition Zone",      status:"bolting",   count:null,  watering:"1–1.5\"/wk",     gal:"0.2 gal/plant",   sec:"2–3 sec",   fert:{"10-10-10":"No","Epsom Salt":"No","Bone Meal":"No"},                                 notes:[], harvests:[], harvest:"Seed collection" },
-  zucchini2:  { id:"zucchini2",  name:"Zucchini (Row 4)",       emoji:"🥒", zone:"Transition Zone",      status:"growing",   count:"x1",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"Wait post-harvest","Epsom Salt":"No","Bone Meal":"No"},                   notes:[], harvests:[], harvest:"May 27" },
+  zucchini2:  { id:"zucchini2",  name:"Zucchini (Row 4)",       emoji:"🥒", zone:"Transition Zone",      status:"growing",   count:"x1",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"Wait post-harvest","Epsom Salt":"No","Bone Meal":"Applied"},               notes:[], harvests:[], harvest:"TBD - monitor" },
   roma:       { id:"roma",       name:"Roma Tomatoes",          emoji:"🍅", zone:"Transition Zone",      status:"growing",   count:"~7",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"No","Epsom Salt":"1 tbsp/ft height","Bone Meal":"1–2 tbsp/plant"},          notes:[], harvests:[], harvest:"Aug 15" },
-  arrowPeas:  { id:"arrowPeas",  name:"Arrow Peas (Pea Tree)",  emoji:"🫛", zone:"East – Full Sun",       status:"growing",   count:null,  watering:"1–1.5\"/wk",     gal:"0.4 gal/ft",      sec:"5 sec/ft",  fert:{"10-10-10":"No","Epsom Salt":"No","Bone Meal":"1 tbsp/ft row"},                       notes:[], harvests:[], harvest:"May 31" },
+  arrowPeas:  { id:"arrowPeas",  name:"Arrow Peas (Pea Tree)",  emoji:"🫛", zone:"East – Full Sun",       status:"growing",   count:null,  watering:"1–1.5\"/wk",     gal:"0.4 gal/ft",      sec:"5 sec/ft",  fert:{"10-10-10":"No","Epsom Salt":"No","Bone Meal":"1 tbsp/ft row"},                       notes:[], harvests:[], harvest:"Ongoing" },
   strawberry: { id:"strawberry", name:"Strawberries",           emoji:"🍓", zone:"East – Full Sun",       status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp in runner pots"},     notes:[], harvests:[], harvest:"Next spring" },
   cherokee:   { id:"cherokee",   name:"Cherokee Purple",        emoji:"🍅", zone:"East – Full Sun",       status:"growing",   count:"x5",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"No","Epsom Salt":"1 tbsp/ft height","Bone Meal":"1–2 tbsp/plant"},          notes:[], harvests:[], harvest:"Aug 29" },
-  squash:     { id:"squash",     name:"Butternut Squash",       emoji:"🎃", zone:"East – Full Sun",       status:"growing",   count:"x2",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"Check leaves first","Epsom Salt":"Check leaves first","Bone Meal":"2 tbsp/plant"}, notes:[], harvests:[], harvest:"Sept 1" },
+  squash:     { id:"squash",     name:"Butternut Squash",       emoji:"🎃", zone:"East – Full Sun",       status:"growing",   count:"x2",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"Check leaves","Epsom Salt":"Check leaves","Bone Meal":"2 tbsp/plant"},     notes:[], harvests:[], harvest:"Sept 1" },
   sungold:    { id:"sungold",    name:"Sungold Tomatoes",       emoji:"🍅", zone:"East – Full Sun",       status:"growing",   count:"x5",  watering:"1–2\"/wk",        gal:"0.75 gal/plant",  sec:"9 sec",     fert:{"10-10-10":"No","Epsom Salt":"1 tbsp/ft height","Bone Meal":"1–2 tbsp/plant"},          notes:[], harvests:[], harvest:"July 25" },
-  whiteStraw: { id:"whiteStraw", name:"White Strawberries",     emoji:"🍓", zone:"Raised Bed 1",          status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp in runner pots"},     notes:[], harvests:[], harvest:"Next spring" },
-  redStraw2:  { id:"redStraw2",  name:"Red Strawberries",       emoji:"🍓", zone:"Raised Bed 2",          status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp in runner pots"},     notes:[], harvests:[], harvest:"Next spring" },
-  redStraw3:  { id:"redStraw3",  name:"Red Strawberries",       emoji:"🍓", zone:"Raised Bed 3",          status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp in runner pots"},     notes:[], harvests:[], harvest:"Next spring" },
-  blueberry:  { id:"blueberry",  name:"Blueberries",            emoji:"🫐", zone:"Raised Bed 4",          status:"growing",   count:"x3",  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"No – acidic fert only","Epsom Salt":"No","Bone Meal":"1 tbsp/plant"},       notes:[], harvests:[], harvest:"June 14" },
-  cucumber:   { id:"cucumber",   name:"Cucumbers (planned)",    emoji:"🥒", zone:"Second Garden",         status:"planned",   count:null,  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"At planting","Epsom Salt":"No","Bone Meal":"At planting"},                 notes:[], harvests:[], harvest:"TBD after planting" },
-  redStraw4:  { id:"redStraw4",  name:"Red Strawberries",       emoji:"🍓", zone:"Second Garden",         status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp in runner pots"},     notes:[], harvests:[], harvest:"Next spring" },
+  whiteStraw: { id:"whiteStraw", name:"White Strawberries",     emoji:"🍓", zone:"Raised Bed 1",          status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp runner pots"},        notes:[], harvests:[], harvest:"Next spring" },
+  redStraw2:  { id:"redStraw2",  name:"Red Strawberries",       emoji:"🍓", zone:"Raised Bed 2",          status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp runner pots"},        notes:[], harvests:[], harvest:"Next spring" },
+  redStraw3:  { id:"redStraw3",  name:"Red Strawberries",       emoji:"🍓", zone:"Raised Bed 3",          status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp runner pots"},        notes:[], harvests:[], harvest:"Next spring" },
+  blueberry:  { id:"blueberry",  name:"Blueberries",            emoji:"🫐", zone:"Raised Bed 4",          status:"growing",   count:"x3",  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"No – acidic fert","Epsom Salt":"No","Bone Meal":"1 tbsp/plant"},           notes:[], harvests:[], harvest:"June 14" },
+  cucumber:   { id:"cucumber",   name:"Cucumbers",              emoji:"🥒", zone:"Second Garden Row 1",   status:"growing",   count:"x6",  watering:"1–2\"/wk",        gal:"0.5 gal/plant",   sec:"6 sec",     fert:{"10-10-10":"At planting ✓","Epsom Salt":"No","Bone Meal":"At planting ✓"},            notes:[], harvests:[], harvest:"Aug 4" },
+  redStraw4:  { id:"redStraw4",  name:"Red Strawberries",       emoji:"🍓", zone:"Second Garden Row 4",   status:"done",      count:null,  watering:"1–1.5\"/wk",     gal:"0.25 gal/plant",  sec:"3 sec",     fert:{"10-10-10":"1 tbsp/plant","Epsom Salt":"No","Bone Meal":"1 tbsp runner pots"},        notes:[], harvests:[], harvest:"Next spring" },
   horseradish:{ id:"horseradish",name:"Horseradish",            emoji:"🌿", zone:"Container (30\" pot)",  status:"growing",   count:"x2",  watering:"Let top 2\" dry", gal:"Monitor",         sec:"Monitor",   fert:{"10-10-10":"Wait 3–4 weeks","Epsom Salt":"No","Bone Meal":"Wait 3–4 weeks"},          notes:[], harvests:[], harvest:"Fall or next year" },
   arrowNew:   { id:"arrowNew",   name:"Arrow Peas (New Seeds)", emoji:"🫛", zone:"East – Full Sun",       status:"sprouting", count:null,  watering:"1–1.5\"/wk",     gal:"0.4 gal/ft",      sec:"5 sec/ft",  fert:{"10-10-10":"No","Epsom Salt":"No","Bone Meal":"1 tbsp/ft row"},                       notes:[], harvests:[], harvest:"July 23" },
 };
 
+// Main garden grid - 6 cols (W→E), 4 rows (N→S)
+// Row 1: beans(N), serrano(M), greenPepper(S)
+// Row 2: lettuce(N), habanero(UM), paprika(LM), parsley(S)
 const GRID = [
-  ["beans","lettuce","arugula1","arugula2","arrowPeas","squash"],
-  ["beans","lettuce","zucchini1","zucchini2","strawberry","squash"],
-  ["greenPepper","paprika","empty","roma","cherokee","sungold"],
-  ["greenPepper","parsley","empty","roma","cherokee","sungold"],
+  ["beans",    "lettuce",  "arugula1", "arugula2", "arrowPeas","squash"],
+  ["serrano",  "habanero", "zucchini1","zucchini2","strawberry","squash"],
+  ["greenPepper","paprika","empty",    "roma",     "cherokee", "sungold"],
+  ["greenPepper","parsley","empty",    "roma",     "cherokee", "sungold"],
 ];
+
 const RAISED = [{id:"blueberry",label:"Bed 4 (N)"},{id:"redStraw3",label:"Bed 3"},{id:"redStraw2",label:"Bed 2"},{id:"whiteStraw",label:"Bed 1 (S)"}];
-const SECOND = [{id:"cucumber",label:"Rows 1–2"},{id:"redStraw4",label:"Row 4 East"}];
+const SECOND = [{id:"cucumber",label:"Row 1 – Trellis"},{id:"redStraw4",label:"Row 4 East"}];
 const OTHERS = ["horseradish","arrowNew"];
 
 const ST = {
@@ -77,7 +83,6 @@ const fmtD = iso => iso ? new Date(iso).toLocaleDateString("en-US",{month:"short
 const F = "Lato,sans-serif";
 const PF = "'Playfair Display',Georgia,serif";
 
-// ── Confirm Dialog ────────────────────────────────────────────────────────────
 function Confirm({msg, onYes, onNo}) {
   return React.createElement("div",{onClick:onNo,style:{position:"fixed",inset:0,background:"rgba(0,0,0,.88)",zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",padding:"20px",fontFamily:F}},
     React.createElement("div",{onClick:e=>e.stopPropagation(),style:{background:"#0f1f0f",border:"1px solid #c0392b",borderRadius:16,padding:"24px 20px",maxWidth:320,width:"100%",textAlign:"center"}},
@@ -92,12 +97,10 @@ function Confirm({msg, onYes, onNo}) {
   );
 }
 
-// ── Toast ─────────────────────────────────────────────────────────────────────
 function Toast({msg}) {
   return msg ? React.createElement("div",{style:{position:"fixed",bottom:88,left:"50%",transform:"translateX(-50%)",background:"#2a5225",color:"#c8e6c9",padding:"10px 22px",borderRadius:22,fontSize:13,fontWeight:700,boxShadow:"0 4px 20px rgba(0,0,0,.5)",zIndex:150,whiteSpace:"nowrap",fontFamily:F}},msg) : null;
 }
 
-// ── Upload Modal ──────────────────────────────────────────────────────────────
 function UploadModal({plants, onClose}) {
   const harvests = [], notes = [];
   Object.values(plants).forEach(p => {
@@ -105,16 +108,20 @@ function UploadModal({plants, onClose}) {
     p.notes.forEach(n => notes.push(fmtD(n.date)+" | "+p.name+" | "+n.text));
   });
   const text = "FORT MILL GARDEN DATA EXPORT\nDate: "+new Date().toLocaleDateString()+"\n\n=== HARVEST LOG ===\n"+(harvests.length?harvests.join("\n"):"No harvests logged yet")+"\n\n=== PLANT NOTES ===\n"+(notes.length?notes.join("\n"):"No notes logged yet");
-  const copy = () => navigator.clipboard.writeText(text).catch(()=>{});
-  const inp = {background:"#060e06",border:"1px solid #2a5225",borderRadius:7,color:"#9ed49e",fontSize:10,padding:"10px",width:"100%",minHeight:180,resize:"none",fontFamily:"monospace",lineHeight:1.6,outline:"none"};
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(text).catch(()=>{});
+    setCopied(true);
+    setTimeout(()=>setCopied(false),2500);
+  };
   return React.createElement("div",{onClick:onClose,style:{position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:80,display:"flex",alignItems:"flex-end",backdropFilter:"blur(6px)"}},
     React.createElement("div",{onClick:e=>e.stopPropagation(),style:{background:"#0b1a0b",border:"1px solid #52b788",borderRadius:"22px 22px 0 0",width:"100%",maxWidth:520,margin:"0 auto",maxHeight:"82vh",overflowY:"auto",paddingBottom:36,fontFamily:F}},
       React.createElement("div",{style:{textAlign:"center",padding:"12px 0 4px"}},React.createElement("div",{style:{display:"inline-block",width:36,height:4,borderRadius:2,background:"#52b788"}})),
       React.createElement("div",{style:{padding:"12px 18px 0"}},
         React.createElement("div",{style:{fontFamily:PF,fontSize:18,fontWeight:700,color:"#b8dfba",marginBottom:4}},"📤 Export to Claude"),
         React.createElement("div",{style:{color:"#6aaa6e",fontSize:12,marginBottom:12}},"Copy this and paste into your Claude chat → say \"log this to Google Sheets\""),
-        React.createElement("textarea",{readOnly:true,value:text,style:inp}),
-        React.createElement("button",{onClick:copy,style:{width:"100%",padding:"13px",background:"#52b788",border:"none",borderRadius:10,color:"#0b1a0b",fontSize:15,fontWeight:900,cursor:"pointer",fontFamily:F,marginTop:10,marginBottom:8}},"📋 Copy All Data"),
+        React.createElement("textarea",{readOnly:true,value:text,style:{background:"#060e06",border:"1px solid #2a5225",borderRadius:7,color:"#9ed49e",fontSize:10,padding:"10px",width:"100%",minHeight:180,resize:"none",fontFamily:"monospace",lineHeight:1.6,outline:"none"}}),
+        React.createElement("button",{onClick:copy,style:{width:"100%",padding:"13px",background:copied?"#52b788":"#2a5225",border:"none",borderRadius:10,color:copied?"#0b1a0b":"#c8e6c9",fontSize:15,fontWeight:900,cursor:"pointer",fontFamily:F,marginTop:10,marginBottom:8,transition:"all .2s"}},copied?"✓ Copied!":"📋 Copy All Data"),
         React.createElement("div",{style:{color:"#2a5225",fontSize:11,textAlign:"center",marginBottom:10}},"Then paste into Claude and say \"log this to Google Sheets\""),
         React.createElement("button",{onClick:onClose,style:{width:"100%",padding:"11px",background:"transparent",border:"1px solid #2a5225",borderRadius:10,color:"#4caf50",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:F}},"Close")
       )
@@ -122,7 +129,6 @@ function UploadModal({plants, onClose}) {
   );
 }
 
-// ── Plant Modal ───────────────────────────────────────────────────────────────
 function PlantModal({plant, onClose, onSaveNote, onSaveHarvest}) {
   const [tab, setTab] = useState("info");
   const [note, setNote] = useState("");
@@ -141,7 +147,6 @@ function PlantModal({plant, onClose, onSaveNote, onSaveHarvest}) {
   return React.createElement("div",{onClick:onClose,style:{position:"fixed",inset:0,background:"rgba(0,0,0,.82)",zIndex:50,display:"flex",alignItems:"flex-end",backdropFilter:"blur(6px)"}},
     React.createElement("div",{onClick:e=>e.stopPropagation(),style:{background:"#0b1a0b",border:"1px solid #2a5225",borderRadius:"22px 22px 0 0",width:"100%",maxWidth:520,margin:"0 auto",maxHeight:"91vh",overflowY:"auto",paddingBottom:36,fontFamily:F}},
       React.createElement("div",{style:{textAlign:"center",padding:"12px 0 4px"}},React.createElement("div",{style:{display:"inline-block",width:36,height:4,borderRadius:2,background:"#2a5225"}})),
-      // header
       React.createElement("div",{style:{padding:"8px 18px 14px",borderBottom:"1px solid #162a16",display:"flex",alignItems:"flex-start",gap:12}},
         React.createElement("span",{style:{fontSize:36,lineHeight:1}},plant.emoji),
         React.createElement("div",{style:{flex:1}},
@@ -154,14 +159,12 @@ function PlantModal({plant, onClose, onSaveNote, onSaveHarvest}) {
         ),
         React.createElement("button",{onClick:onClose,style:{background:"#162a16",border:"none",color:"#81c784",width:30,height:30,borderRadius:"50%",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},"×")
       ),
-      // sub-tabs
       React.createElement("div",{style:{display:"flex",borderBottom:"1px solid #162a16"}},
         [["info","📋 Info"],["harvest","🌾 Harvest"],["notes","📝 Notes"]].map(([v,l])=>
           React.createElement("button",{key:v,onClick:()=>setTab(v),style:{flex:1,padding:"10px 4px",background:tab===v?"#162a16":"transparent",border:"none",borderBottom:tab===v?"2px solid #52b788":"2px solid transparent",color:tab===v?"#c8e6c9":"#4caf50",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:F}},l)
         )
       ),
       React.createElement("div",{style:{padding:"14px 18px 0"}},
-        // INFO
         tab==="info"&&React.createElement(React.Fragment,null,
           React.createElement("div",{style:{background:"#081408",border:"1px solid #2a5225",borderRadius:10,padding:"10px 14px",marginBottom:12}},
             React.createElement("div",{style:{color:"#4caf50",fontSize:10,fontWeight:800,letterSpacing:1,textTransform:"uppercase",marginBottom:3}},"📅 Estimated Harvest"),
@@ -185,7 +188,6 @@ function PlantModal({plant, onClose, onSaveNote, onSaveHarvest}) {
             )
           )
         ),
-        // HARVEST
         tab==="harvest"&&React.createElement(React.Fragment,null,
           React.createElement("div",{style:{background:"#081408",border:"1px solid #2a5225",borderRadius:10,padding:"12px",marginBottom:12}},
             React.createElement("div",{style:{color:"#81c784",fontSize:10,fontWeight:800,letterSpacing:1,textTransform:"uppercase",marginBottom:10}},"Log Harvest"),
@@ -212,7 +214,6 @@ function PlantModal({plant, onClose, onSaveNote, onSaveHarvest}) {
               )
             )
         ),
-        // NOTES
         tab==="notes"&&React.createElement(React.Fragment,null,
           React.createElement("div",{style:{background:"#081408",border:"1px solid #2a5225",borderRadius:10,padding:"12px",marginBottom:12}},
             React.createElement("div",{style:{color:"#81c784",fontSize:10,fontWeight:800,letterSpacing:1,textTransform:"uppercase",marginBottom:8}},"Add Note"),
@@ -234,36 +235,21 @@ function PlantModal({plant, onClose, onSaveNote, onSaveHarvest}) {
   );
 }
 
-// ── Settings Page ─────────────────────────────────────────────────────────────
 function SettingsPage({plants, onReset, showToast}) {
   const [confirm, setConfirm] = useState(null);
   const plantsWithNotes = Object.values(plants).filter(p=>p.notes.length>0);
   const totalH = Object.values(plants).reduce((a,p)=>a+p.harvests.length,0);
   const totalN = Object.values(plants).reduce((a,p)=>a+p.notes.length,0);
-
-  const ask = (msg, action) => setConfirm({msg, action});
+  const ask = (msg,action) => setConfirm({msg,action});
   const yes = () => { confirm.action(); setConfirm(null); };
-
-  const section = (title, children) =>
-    React.createElement("div",{style:{marginBottom:24}},
-      React.createElement("div",{style:{color:"#6aaa6e",fontSize:10,fontWeight:800,letterSpacing:1.2,textTransform:"uppercase",marginBottom:10,paddingBottom:6,borderBottom:"1px solid #162a16"}},title),
-      children
-    );
-
-  const resetBtn = (label, sub, color, action) =>
+  const resetBtn = (label,sub,color,action) =>
     React.createElement("button",{onClick:action,style:{width:"100%",padding:"14px 16px",background:"#0f1f0f",border:"1px solid "+color,borderRadius:12,color:color,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:F,textAlign:"left",display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
-      React.createElement("div",null,
-        React.createElement("div",null,label),
-        React.createElement("div",{style:{fontSize:11,fontWeight:400,color:"#555",marginTop:2}},sub)
-      ),
+      React.createElement("div",null,React.createElement("div",null,label),React.createElement("div",{style:{fontSize:11,fontWeight:400,color:"#555",marginTop:2}},sub)),
       React.createElement("span",{style:{fontSize:18}},"›")
     );
-
   return React.createElement("div",{style:{padding:"16px 14px",fontFamily:F}},
     React.createElement("div",{style:{fontFamily:PF,fontSize:20,fontWeight:700,color:"#9ed49e",marginBottom:4}},"⚙️ Settings"),
-    React.createElement("div",{style:{color:"#4caf50",fontSize:11,marginBottom:20}},"Version 2.0 · Fort Mill, SC Spring 2026"),
-
-    // stats
+    React.createElement("div",{style:{color:"#4caf50",fontSize:11,marginBottom:20}},"Version 3.0 · Fort Mill, SC Spring 2026"),
     React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:24}},
       [["🌾 Harvests",totalH,"#ffd54f","#2a2a00"],["📝 Notes",totalN,"#4fc3f7","#001a2a"]].map(([l,v,c,bg])=>
         React.createElement("div",{key:l,style:{background:bg,border:"1px solid "+c+"44",borderRadius:12,padding:"12px",textAlign:"center"}},
@@ -272,25 +258,15 @@ function SettingsPage({plants, onReset, showToast}) {
         )
       )
     ),
-
-    section("🗑 Reset All Data",
-      React.createElement(React.Fragment,null,
-        resetBtn("Clear All Data","Wipes all notes AND all harvests for every plant","#c0392b",
-          ()=>ask("Clear ALL notes and harvests for every plant?",()=>{onReset("all");showToast("All data cleared");})
-        ),
-        resetBtn("Clear All Harvests","Removes harvest logs only · Notes stay intact","#e67e22",
-          ()=>ask("Clear all harvest logs? Your notes will be kept.",()=>{onReset("harvests");showToast("All harvests cleared");})
-        ),
-        resetBtn("Clear All Notes","Removes notes only · Harvests stay intact","#f39c12",
-          ()=>ask("Clear all notes? Your harvest logs will be kept.",()=>{onReset("notes");showToast("All notes cleared");})
-        )
-      )
-    ),
-
-    plantsWithNotes.length>0 && section("🌱 Clear Notes by Plant",
+    React.createElement("div",{style:{color:"#6aaa6e",fontSize:10,fontWeight:800,letterSpacing:1.2,textTransform:"uppercase",marginBottom:10,paddingBottom:6,borderBottom:"1px solid #162a16"}},"🗑 Reset All Data"),
+    resetBtn("Clear All Data","Wipes all notes AND all harvests for every plant","#c0392b",()=>ask("Clear ALL notes and harvests for every plant?",()=>{onReset("all");showToast("All data cleared");})),
+    resetBtn("Clear All Harvests","Removes harvest logs only · Notes stay intact","#e67e22",()=>ask("Clear all harvest logs? Your notes will be kept.",()=>{onReset("harvests");showToast("All harvests cleared");})),
+    resetBtn("Clear All Notes","Removes notes only · Harvests stay intact","#f39c12",()=>ask("Clear all notes? Your harvest logs will be kept.",()=>{onReset("notes");showToast("All notes cleared");})),
+    plantsWithNotes.length>0&&React.createElement(React.Fragment,null,
+      React.createElement("div",{style:{color:"#6aaa6e",fontSize:10,fontWeight:800,letterSpacing:1.2,textTransform:"uppercase",marginBottom:10,paddingBottom:6,borderBottom:"1px solid #162a16",marginTop:20}},"🌱 Clear Notes by Plant"),
       React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6}},
         plantsWithNotes.map(p=>{
-          const s = ST[p.status]||ST.growing;
+          const s=ST[p.status]||ST.growing;
           return React.createElement("div",{key:p.id,style:{background:s.bg,border:"1px solid "+s.br,borderRadius:10,padding:"10px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}},
             React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
               React.createElement("span",{style:{fontSize:20}},p.emoji),
@@ -299,22 +275,19 @@ function SettingsPage({plants, onReset, showToast}) {
                 React.createElement("div",{style:{color:s.tx,fontSize:11,opacity:.7}},p.notes.length+" note"+(p.notes.length>1?"s":""))
               )
             ),
-            React.createElement("button",{onClick:()=>ask("Clear all notes for "+p.name+"?",()=>{onReset("plantNotes",p.id);showToast(p.name+" notes cleared");}),
-              style:{background:"#c0392b22",border:"1px solid #c0392b",borderRadius:8,color:"#c0392b",padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:F}},"Clear")
+            React.createElement("button",{onClick:()=>ask("Clear all notes for "+p.name+"?",()=>{onReset("plantNotes",p.id);showToast(p.name+" notes cleared");}),style:{background:"#c0392b22",border:"1px solid #c0392b",borderRadius:8,color:"#c0392b",padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:F}},"Clear")
           );
         })
       )
     ),
-
-    confirm && React.createElement(Confirm,{msg:confirm.msg,onYes:yes,onNo:()=>setConfirm(null)})
+    confirm&&React.createElement(Confirm,{msg:confirm.msg,onYes:yes,onNo:()=>setConfirm(null)})
   );
 }
 
-// ── Cell ──────────────────────────────────────────────────────────────────────
 function Cell({plant, onClick, style}) {
   if(!plant) return null;
-  const s = ST[plant.status]||ST.growing;
-  const hH = plant.harvests.length>0, hN = plant.notes.length>0;
+  const s=ST[plant.status]||ST.growing;
+  const hH=plant.harvests.length>0, hN=plant.notes.length>0;
   return React.createElement("div",{onClick:()=>onClick(plant),
     style:{background:s.bg,border:"2px solid "+s.br,borderRadius:7,padding:"3px 2px",cursor:"pointer",
       display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
@@ -331,9 +304,8 @@ function Cell({plant, onClick, style}) {
   );
 }
 
-// ── Row Item ──────────────────────────────────────────────────────────────────
 function RowItem({plant, label, onClick}) {
-  const s = ST[plant.status]||ST.growing;
+  const s=ST[plant.status]||ST.growing;
   return React.createElement("div",{onClick:()=>onClick(plant),
     style:{background:s.bg,border:"2px solid "+s.br,borderRadius:12,padding:"12px 14px",cursor:"pointer",
       display:"flex",alignItems:"center",gap:12,fontFamily:F,
@@ -349,11 +321,10 @@ function RowItem({plant, label, onClick}) {
   );
 }
 
-// ── Main App ──────────────────────────────────────────────────────────────────
 function App() {
   const [plants, setPlants] = useState(()=>{
     try {
-      const s = localStorage.getItem("fmg_v2");
+      const s=localStorage.getItem("fmg_v3");
       if(s){const d=JSON.parse(s);const m={};Object.keys(PLANTS).forEach(id=>{m[id]={...PLANTS[id],notes:d[id]?.notes||[],harvests:d[id]?.harvests||[]};});return m;}
     } catch(e){}
     return JSON.parse(JSON.stringify(PLANTS));
@@ -365,18 +336,16 @@ function App() {
 
   useEffect(()=>{
     const d={};Object.keys(plants).forEach(id=>{d[id]={notes:plants[id].notes,harvests:plants[id].harvests};});
-    try{localStorage.setItem("fmg_v2",JSON.stringify(d));}catch(e){}
+    try{localStorage.setItem("fmg_v3",JSON.stringify(d));}catch(e){}
   },[plants]);
 
   const showToast = msg => { setToast(msg); setTimeout(()=>setToast(""),2200); };
-
   const saveNote    = (id,text) => { setPlants(p=>({...p,[id]:{...p[id],notes:[...p[id].notes,{text,date:new Date().toISOString()}]}})); showToast("Note saved ✓"); };
   const saveHarvest = (id,data) => { setPlants(p=>({...p,[id]:{...p[id],harvests:[...p[id].harvests,data]}})); showToast("Harvest logged ✓"); };
-
-  const handleReset = (type, plantId) => {
-    setPlants(prev => {
-      const next = {...prev};
-      if(type==="all")         Object.keys(next).forEach(id=>{next[id]={...next[id],notes:[],harvests:[]};});
+  const handleReset = (type,plantId) => {
+    setPlants(prev=>{
+      const next={...prev};
+      if(type==="all")          Object.keys(next).forEach(id=>{next[id]={...next[id],notes:[],harvests:[]};});
       else if(type==="harvests") Object.keys(next).forEach(id=>{next[id]={...next[id],harvests:[]};});
       else if(type==="notes")    Object.keys(next).forEach(id=>{next[id]={...next[id],notes:[]};});
       else if(type==="plantNotes"&&plantId) next[plantId]={...next[plantId],notes:[]};
@@ -384,10 +353,10 @@ function App() {
     });
   };
 
-  const totalH = Object.values(plants).reduce((a,p)=>a+p.harvests.length,0);
-  const totalN = Object.values(plants).reduce((a,p)=>a+p.notes.length,0);
+  const totalH=Object.values(plants).reduce((a,p)=>a+p.harvests.length,0);
+  const totalN=Object.values(plants).reduce((a,p)=>a+p.notes.length,0);
 
-  const done = new Set(); const cells = [];
+  const done=new Set(); const cells=[];
   for(let r=0;r<4;r++) for(let c=0;c<6;c++){
     const id=GRID[r][c]; if(done.has(id))continue; done.add(id);
     let rs=1,cs=1;
@@ -395,8 +364,6 @@ function App() {
     while(c+cs<6&&GRID[r][c+cs]===id)cs++;
     cells.push({id,r,c,rs,cs});
   }
-
-  const TABS = [["map","🗺"],["beds","🪴"],["data","📊"],["settings","⚙️"]];
 
   return React.createElement("div",{style:{height:"100%",display:"flex",flexDirection:"column",background:"#060e06",fontFamily:F,color:"#c8e6c9",overflow:"hidden"}},
 
@@ -407,13 +374,14 @@ function App() {
           React.createElement("div",{style:{fontFamily:PF,fontSize:20,fontWeight:700,color:"#9ed49e"}},"🌿 Fort Mill Garden"),
           React.createElement("div",{style:{fontSize:10,color:"#4caf50",marginTop:1}},"Spring 2026 · Fort Mill, SC")
         ),
-        React.createElement("div",{style:{display:"flex",gap:6}},
-          totalN>0&&React.createElement("div",{style:{background:"#0a2a2a",border:"1px solid #1a4060",borderRadius:14,padding:"4px 10px",fontSize:10,color:"#4fc3f7"}},totalN+" 📝"),
-          totalH>0&&React.createElement("div",{onClick:()=>setShowUpload(true),style:{background:"#1a2a0a",border:"1px solid #52b788",borderRadius:14,padding:"4px 10px",fontSize:10,color:"#81c784",cursor:"pointer"}},totalH+" 🌾 Upload")
+        // Always-visible upload button
+        React.createElement("button",{onClick:()=>setShowUpload(true),style:{background:"#1a2a0a",border:"1px solid #52b788",borderRadius:14,padding:"7px 14px",fontSize:11,color:"#81c784",cursor:"pointer",fontFamily:F,fontWeight:700,display:"flex",alignItems:"center",gap:5}},
+          "📤 Export",
+          (totalH>0||totalN>0)&&React.createElement("span",{style:{background:"#52b788",color:"#0b1a0b",borderRadius:10,padding:"1px 6px",fontSize:10,fontWeight:900}},totalH+totalN)
         )
       ),
       React.createElement("div",{style:{display:"flex",gap:5}},
-        TABS.map(([v,l])=>
+        [["map","🗺"],["beds","🪴"],["data","📊"],["settings","⚙️"]].map(([v,l])=>
           React.createElement("button",{key:v,onClick:()=>setTab(v),style:{flex:1,padding:"7px 2px",borderRadius:8,border:tab===v?"1px solid #52b788":"1px solid #162a16",background:tab===v?"#2a5225":"#0a1a0a",color:tab===v?"#c8e6c9":"#4caf50",fontSize:14,cursor:"pointer",fontFamily:F}},l)
         )
       )
@@ -422,7 +390,6 @@ function App() {
     // content
     React.createElement("div",{style:{flex:1,overflowY:"auto",padding:tab==="settings"?"0":"10px 12px"}},
 
-      // MAP
       tab==="map"&&React.createElement(React.Fragment,null,
         React.createElement("div",{style:{background:"#3a2010",border:"1px solid #6b3a1a",borderRadius:6,padding:"5px",textAlign:"center",fontSize:9,color:"#d4a96a",fontWeight:700,letterSpacing:1,marginBottom:5}},"▲ NORTH — FENCE"),
         React.createElement("div",{style:{display:"flex",marginBottom:3}},
@@ -440,7 +407,6 @@ function App() {
         )
       ),
 
-      // BEDS
       tab==="beds"&&React.createElement(React.Fragment,null,
         React.createElement("div",{style:{color:"#ffd166",fontSize:10,fontWeight:800,letterSpacing:1,textTransform:"uppercase",marginBottom:8}},"Raised Beds"),
         React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:7,marginBottom:18}},RAISED.map(({id,label})=>React.createElement(RowItem,{key:id,plant:plants[id],label,onClick:setSelected}))),
@@ -450,7 +416,6 @@ function App() {
         React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:7}},OTHERS.map(id=>React.createElement(RowItem,{key:id,plant:plants[id],label:null,onClick:setSelected})))
       ),
 
-      // DATA
       tab==="data"&&React.createElement(React.Fragment,null,
         React.createElement("div",{style:{color:"#81c784",fontSize:10,fontWeight:800,letterSpacing:1,textTransform:"uppercase",marginBottom:10}},"Harvest Log"),
         totalH===0
@@ -471,22 +436,18 @@ function App() {
                   )
                 )
               )
-            ),
-            React.createElement("button",{onClick:()=>setShowUpload(true),style:{width:"100%",padding:"13px",background:"#2a5225",border:"none",borderRadius:10,color:"#c8e6c9",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:F,marginTop:4}},"📤 Export to Claude → Google Sheets")
+            )
           )
       ),
 
-      // SETTINGS
       tab==="settings"&&React.createElement(SettingsPage,{plants,onReset:handleReset,showToast})
     ),
 
-    // modals
     selected&&React.createElement(PlantModal,{plant:plants[selected.id],onClose:()=>setSelected(null),onSaveNote:saveNote,onSaveHarvest:saveHarvest}),
     showUpload&&React.createElement(UploadModal,{plants,onClose:()=>setShowUpload(false)}),
     React.createElement(Toast,{msg:toast}),
 
-    // bottom bar
-    React.createElement("div",{style:{background:"#081408",borderTop:"1px solid #162a16",padding:"10px 16px",textAlign:"center",fontSize:9,color:"#2a5225",flexShrink:0,fontFamily:F}},"Tap any plant for details · Data saved on device · Export via Data tab")
+    React.createElement("div",{style:{background:"#081408",borderTop:"1px solid #162a16",padding:"10px 16px",textAlign:"center",fontSize:9,color:"#2a5225",flexShrink:0,fontFamily:F}},"Tap any plant for details · Data saved on device · Export button always top right")
   );
 }
 
